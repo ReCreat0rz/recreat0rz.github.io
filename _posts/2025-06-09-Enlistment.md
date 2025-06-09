@@ -1,8 +1,8 @@
 ---
 layout: post
-by: ReCreat0rz
 title: "Business HTB CTF 2025 - Enlistment"
 date: 2025-06-09
+category: Blockchain
 tags: Blockchain
 ---
 
