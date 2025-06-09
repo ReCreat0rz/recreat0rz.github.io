@@ -48,10 +48,10 @@ Setup contract     : 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16
 RPC URL: http://94.237.59.89:42270/
 ```
 
-#### setup.sol (Enlistment)
+#### `setup.sol` (Enlistment)
 Target Variables appears to be Enlistment Contract
 
-```solidity
+```sol
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.29;
@@ -91,9 +91,9 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 0x748c5f75488b89e1871c7a86a59ba5139d99ea53
 ```
 
-#### Enlistment.sol (Enlistment)
+#### `Enlistment.sol` (Enlistment)
 
-```solidity
+```sol
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.29;
@@ -116,7 +116,7 @@ contract Enlistment {
 }
 ```
 
-#### enlist() function (enlistment)
+#### `enlist() function` (enlistment)
 
 Lets analyze this enlist() function. 
 
@@ -124,7 +124,7 @@ In authorized variable, type data it uses is **bool** which returns either **tru
 - If it match, the transaction get authorized.
 - If it doesn't match, it returns Invalid proof hash
 
-```solidity
+```sol
 function enlist(bytes32 _proofHash) public {
         bool authorized = _proofHash == keccak256(abi.encodePacked(publicKey, privateKey));
         require(authorized, "Invalid proof hash");
@@ -132,7 +132,7 @@ function enlist(bytes32 _proofHash) public {
     }
 ```
 
-###### Getting publicKey (Enlistment)
+###### `Getting publicKey` (Enlistment)
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
 ```bash
@@ -157,7 +157,7 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 0x454e4c4953545f52455153542062793a
 ```
 
-###### Getting privateKey (Enlistment)
+###### `Getting privateKey` (Enlistment)
 Lets call the privateKey()
 
 ```bash
@@ -257,7 +257,7 @@ cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-###### Information Collected (Enlistment)
+###### `Information Collected` (Enlistment)
 So we got the following information to moved on
 
 ```
@@ -274,7 +274,7 @@ Private key (16 bytes): 0x20204147454e5420502e202331333337
 Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-###### enlist() execution (Enlistment)
+###### `enlist() execution` (Enlistment)
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
 
 ```bash
@@ -304,12 +304,10 @@ blobGasUsed
 to                   0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
 ```
 
-###### Verify isSolved() (Enlistment)
+###### `Verify isSolved()` (Enlistment)
 isSolved() function is to confirm whether the player address has successfully performed the enlisted in the enlist() function or not
 
-```solidity
-Setup.sol
-
+```sol
  function isSolved() public view returns (bool) {
         return TARGET.enlisted(player); 
     }
@@ -327,7 +325,7 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
 
-###### Flag (Enlistment)
+###### `Flag` (Enlistment)
 Get the flag
 
 ```bash
