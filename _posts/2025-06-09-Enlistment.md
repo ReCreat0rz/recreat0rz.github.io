@@ -20,7 +20,7 @@ tags: [HTB, Smart Contract, Solidity, Foundry]
 
 Port 42270 is used for rpc url
 
-```shell
+```#!/bin/bash
 RPC URL: http://94.237.59.89:42270/
 ```
 
