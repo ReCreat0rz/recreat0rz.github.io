@@ -3,7 +3,7 @@ layout: post
 title: "Business HTB CTF 2025 - Enlistment"
 date: 2025-06-09
 category: Blockchain
-tags: HTB, Blockchain
+tags: HTB
 ---
 
 Key Lesson:
