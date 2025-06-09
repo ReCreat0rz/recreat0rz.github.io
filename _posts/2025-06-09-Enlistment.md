@@ -2,8 +2,8 @@
 layout: post
 title: "Business HTB CTF 2025 - Enlistment"
 date: 2025-06-09
-category: Blockchain
-tags: HTB
+category: [CTF, Blockchain]
+tags: [HTB, Smart Contract, Solidity, Foundry]
 ---
 
 Key Lesson:
