@@ -20,11 +20,14 @@ Key Lesson:
 Reference:
 https://book.getfoundry.sh/introduction/overview
 ```
+Unzip the File
+![[blockchain_enlistment]](/assets/img/posts/2025-06-09-Enlistment/blockchain_enlistment.png)__blockchain_enlistment__
 
 42270 is used for rpc url
 ```
 RPC URL: http://94.237.59.89:42270/
 ```
+![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)__rpc_url__
 
 Lets use nc on port 59016
 ```
@@ -168,6 +171,8 @@ Error: server returned an error response: error code 3: execution reverted, data
 
 After further analysis, the main problem is the privateKey's visibility is **not public** but use **private** so it cannot be called directly using cast call
 
+![[privateKey used private not public]](/assets/img/posts/2025-06-09-Enlistment/privateKey used private not public.png)__privateKey used private not public__
+
 REMEMBER: 
 **EVERYTHING IN BLOCKCHAIN IS PUBLIC, NO VARIABLE IS TRULY PRIVATE** **. It is not a good idea to hide the value even it uses the visibility as private.**
 
@@ -197,7 +202,7 @@ Contract Storage Layout:
 {"storage":[{"astId":3,"contract":"Enlistment.sol:Enlistment","label":"publicKey","offset":0,"slot":"0","type":"t_bytes16"},{"astId":5,"contract":"Enlistment.sol:Enlistment","label":"privateKey","offset":16,"slot":"0","type":"t_bytes16"},{"astId":9,"contract":"Enlistment.sol:Enlistment","label":"enlisted","offset":0,"slot":"1","type":"t_mapping(t_address,t_bool)"}],"types":{"t_address":{"encoding":"inplace","label":"address","numberOfBytes":"20"},"t_bool":{"encoding":"inplace","label":"bool","numberOfBytes":"1"},"t_bytes16":{"encoding":"inplace","label":"bytes16","numberOfBytes":"16"},"t_mapping(t_address,t_bool)":{"encoding":"mapping","key":"t_address","label":"mapping(address => bool)","numberOfBytes":"32","value":"t_bool"}}}
 ```
 
-  Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
+Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
 ```
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
@@ -207,12 +212,14 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 └─$ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
 ```
+![[get slot for privateKey]](/assets/img/posts/2025-06-09-Enlistment/get slot for privateKey.png)__get slot for privateKey__
 
 Lets split this public and privatekey by 16 bytes. yep public key looks equal
 ```
 Public Key: 0x454e4c4953545f52455153542062793a
 Private key: 0x20204147454e5420502e202331333337
 ```
+![[Split public key and private key]](/assets/img/posts/2025-06-09-Enlistment/Split public key and private key.png)__Split public key and private key__
 
 After further analysis, we need to pack the public key first then privateKey as the last one. 
 ```
