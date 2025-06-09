@@ -6,9 +6,8 @@ category: [CTF, Blockchain]
 tags: [HTB, Smart Contract, Solidity, Foundry]
 ---
 
-`
-Key Lesson:
-
+#### Key Lesson:
+```
 - Smart Contract Basics
 	- Visibility in Solidity Programming Language
 	- How to compile solidity file
@@ -17,10 +16,7 @@ Key Lesson:
 	- Send Transaction
 	- Get Storage
 	- Keccak (Hash arbitrary data using keccak-256)
-
-Reference:
-https://book.getfoundry.sh/introduction/overview
-`
+```
 
 Unzip the File
 
