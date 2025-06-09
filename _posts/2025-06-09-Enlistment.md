@@ -17,16 +17,12 @@ tags: [HTB, Smart Contract, Solidity, Foundry]
 	- Keccak (Hash arbitrary data using keccak-256)
 
 ## Proof of Concept:
-Unzip the File
-
-![[blockchain_enlistment]](/assets/img/posts/2025-06-09-Enlistment/blockchain_enlistment.png)
 
 Port 42270 is used for rpc url
 
 ```bash
 $ RPC URL: http://94.237.59.89:42270/
 ```
-![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)
 
 Lets use nc on port 59016
 
@@ -73,7 +69,6 @@ contract Setup {
     }
 }
 ```
-
 After further analysis, the **isSolved()** function's type data is **bool** which returns either **true or false**. It means that we must make sure that the player is actually done the transaction in Enlistement.sol
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
@@ -170,8 +165,6 @@ Got the following error
 
 After further analysis, the main problem is the privateKey's visibility is **not public** but use **private** so it cannot be called directly using cast call
 
-![[privateKey used private not public]](/assets/img/posts/2025-06-09-Enlistment/privateKey used private not public.png)
-
 REMEMBER: 
 **EVERYTHING IN BLOCKCHAIN IS PUBLIC, NO VARIABLE IS TRULY PRIVATE** **. It is not a good idea to hide the value even it uses the visibility as private.**
 
@@ -187,9 +180,8 @@ Error: Source file requires different compiler version (current compiler is 0.8.
 ```
 
 Lets download the latest version (0.8.30) from github
-```
-https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux
-```
+
+![[Solidity Compiler 0.8.3.0]](https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux)
 
 Lets use solidity compiler to get the slot for private key
 
