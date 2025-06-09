@@ -23,14 +23,14 @@ Unzip the File
 
 Port 42270 is used for rpc url
 
-```sh
+```bash
 $ RPC URL: http://94.237.59.89:42270/
 ```
 ![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)
 
 Lets use nc on port 59016
 
-```sh
+```bash
 $ nc 94.237.59.89 59016
 1 - Get connection information
 2 - Restart instance
@@ -78,11 +78,11 @@ After further analysis, the **isSolved()** function's type data is **bool** whic
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
 
-```sh
+```bash
 $ cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
-```sh
+```bash
 $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
 0x000000000000000000000000748c5f75488b89e1871c7a86a59ba5139d99ea53
 
@@ -133,22 +133,22 @@ function enlist(bytes32 _proofHash) public {
 ###### Getting publicKey
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
-```sh
+```bash
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()"
 ```
 
-```sh
+```bash
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
 0x454e4c4953545f52455153542062793a00000000000000000000000000000000
 ```
 
 Lets just call the publicKey()(bytes16)
 
-```sh
+```bash
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 ```
 
-```sh
+```bash
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
 0x454e4c4953545f52455153542062793a
 ```
@@ -156,7 +156,7 @@ $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99
 ###### Getting privateKey
 Lets call the privateKey()
 
-```sh
+```bash
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 
@@ -165,7 +165,7 @@ Error: server returned an error response: error code 3: execution reverted, data
 ```
 Got the following error
 
-`Error: server returned an error response: error code 3: execution reverted, data: "0x"`
+**Error: server returned an error response: error code 3: execution reverted, data: "0x"**
 
 
 After further analysis, the main problem is the privateKey's visibility is **not public** but use **private** so it cannot be called directly using cast call
@@ -177,7 +177,7 @@ REMEMBER:
 
 Lets check the storage? Requires solidity compiler version 0.8.29
 
-```sh
+```bash
 $ ./solc-static-linux --storage-layout Enlistment.sol              
 Error: Source file requires different compiler version (current compiler is 0.8.25+commit.b61c2a91.Linux.g++) - note that nightly builds are considered to be strictly less than the released version                                                                                                                                             
  --> Enlistment.sol:3:1:                                                                                                                                                 
@@ -187,12 +187,13 @@ Error: Source file requires different compiler version (current compiler is 0.8.
 ```
 
 Lets download the latest version (0.8.30) from github
-
-`https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux`
+```
+https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux
+```
 
 Lets use solidity compiler to get the slot for private key
 
-```sh
+```bash
 $ ./solc-static-linux --storage-layout Enlistment.sol
 
 ======= Enlistment.sol:Enlistment =======
@@ -202,11 +203,11 @@ Contract Storage Layout:
 
 Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
 
-```sh
+```bash
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
 
-```sh
+```bash
 $ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
 ```
@@ -215,10 +216,10 @@ $ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139
 
 Lets split this public and privatekey by 16 bytes. yep public key looks equal
 
-`
+```
 Public Key: 0x454e4c4953545f52455153542062793a
 Private key: 0x20204147454e5420502e202331333337
-`
+```
 
 ![[Split public key and private key]](/assets/img/posts/2025-06-09-Enlistment/Split public key and private key.png)
 
@@ -230,17 +231,17 @@ keccak256(abi.encodePacked(publicKey, privateKey));
 
 Lets switch the private key and public key order. In this case, (privateKey, publicKey) to (privateKey to publicKey) and append it like this one
 
-`
+```
 454e4c4953545f52455153542062793a20204147454e5420502e202331333337
-`
+```
 
 Lets use cast keccak to get proofHash() for this
 
-```sh
+```bash
 $ cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 ```
 
-```sh
+```bash
 $ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
@@ -248,7 +249,7 @@ $ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 ###### Information Collected
 So we got the following information to moved on
 
-`
+```
 Player Private Key : 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36
 Player Address     : 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 Target contract    : 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
@@ -260,16 +261,16 @@ Public Key (16 bytes): 0x454e4c4953545f52455153542062793a
 Private key (16 bytes): 0x20204147454e5420502e202331333337
 
 Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
-`
+```
 
 ###### enlist() execution
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
 
-```sh
+```bash
 $ cast send -r <RPC_URL> --private-key <PLAYER_PRIVATE_KEY> <ENLISTMENT_CONTRACT> "enlist(bytes32)" <PROOF_HASH_FROM_KECCAK>
 ```
 
-```sh
+```bash
 $ cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
 blockHash            0xb98c1b933a0dc7f6ad80978cc48832689621d2a4648b29fc02588645d299f869
@@ -302,11 +303,11 @@ isSolved() function is to confirm whether the player address has successfully pe
 
 Lets verify the isSolved() function if returns **true** with cast call with player address. Yep it returns **true** (0x1)
 
-```sh
+```bash
 $ cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 ```
 
-```sh
+```bash
 $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
@@ -314,7 +315,7 @@ $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A
 ## Flag
 Get the flag
 
-```sh
+```bash
 $ nc 94.237.59.89 59016                                                                                                                     
 1 - Get connection information
 2 - Restart instance
