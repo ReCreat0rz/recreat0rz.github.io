@@ -28,7 +28,7 @@ Port 42270 is used for rpc url
 ```
 RPC URL: http://94.237.59.89:42270/
 ```
-![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)__rpc_url__
+![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)
 
 Lets use nc on port 59016
 ```bash
