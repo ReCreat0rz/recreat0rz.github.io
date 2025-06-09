@@ -7,5 +7,5 @@ order: 4
 Brief explanation about myself:
 * 2 years work experience as Penetration Tester
 * I'm focusing on Blockchain
-* I;m interested on Game Reversing
+* I'm interested on Game Reversing
 * Likes to Play Games, Watch Anime, Read Books
