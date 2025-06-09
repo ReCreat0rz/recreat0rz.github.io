@@ -322,4 +322,3 @@ $ nc 94.237.59.89 59016
 Select action (enter number): 3
 HTB{gg_wp_w3lc0me_t0_th3_t34m}
 ```
-![[get the flag]](/assets/img/posts/2025-06-09-Enlistment/get the flag.png)
