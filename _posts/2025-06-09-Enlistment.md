@@ -180,7 +180,7 @@ Error: Source file requires different compiler version (current compiler is 0.8.
 
 Lets download the latest version (0.8.30) from github
 
-![[Solidity Compiler 0.8.3.0]](https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux)
+(https://github.com/ethereum/solidity/releases/download/v0.8.30/solc-static-linux)
 
 Lets use solidity compiler to get the slot for private key
 
