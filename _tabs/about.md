@@ -4,6 +4,8 @@ order: 4
 ---
 
 ## HEAVEN's DAWN
-My name is raihan. Brief explanation about myself:
-* Working as Penetration Tester
+Brief explanation about myself:
+* 2 years work experience as Penetration Tester
+* I'm focusing on Blockchain
+* I;m interested on Game Reversing
 * Likes to Play Games, Watch Anime, Read Books
