@@ -3,7 +3,7 @@ layout: post
 title: "Business HTB CTF 2025 - Enlistment"
 date: 2025-06-09
 category: Blockchain
-tags: Blockchain
+tags: HTB, Blockchain
 ---
 
 Key Lesson:
@@ -319,10 +319,4 @@ Get the flag
 Select action (enter number): 3
 HTB{gg_wp_w3lc0me_t0_th3_t34m}
 ```
-
-# There are many other languages you can use, but the style has to be loaded first
-
-ForEach ($thing in $things) {
-    Write-Output "It highlights it using the GitHub style"
-}
-```
+![[get the flag]](/assets/img/posts/2025-06-09-Enlistment/get the flag.png)__get the flag__
