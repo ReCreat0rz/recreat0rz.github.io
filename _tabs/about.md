@@ -12,5 +12,5 @@ Brief explanation about myself:
 * Blockchain
 
 ## Area of Interest
-* Game Reversing
-* Console Reversing
+* Game Reverse Engineering
+* Console Reverse Engineering
