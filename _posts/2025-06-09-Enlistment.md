@@ -20,13 +20,13 @@ tags: [HTB, Smart Contract, Solidity, Foundry]
 
 Port 42270 is used for rpc url
 
-```bash
+```#!/bin/bash
 $ RPC URL: http://94.237.59.89:42270/
 ```
 
 Lets use nc on port 59016
 
-```bash
+```#!/bin/bash
 $ nc 94.237.59.89 59016
 1 - Get connection information
 2 - Restart instance
