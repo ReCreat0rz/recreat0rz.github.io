@@ -109,7 +109,7 @@ contract Enlistment {
 }
 ```
 
-#### enlist() function
+##### enlist() function
 
 Lets analyze this enlist() function. 
 
@@ -125,7 +125,7 @@ function enlist(bytes32 _proofHash) public {
     }
 ```
 
-###### Getting publicKey
+##### Getting publicKey
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
 ```bash
@@ -148,7 +148,7 @@ $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99
 0x454e4c4953545f52455153542062793a
 ```
 
-###### Getting privateKey
+##### Getting privateKey
 Lets call the privateKey()
 
 ```bash
@@ -238,7 +238,7 @@ $ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-###### Information Collected
+##### Information Collected
 So we got the following information to moved on
 
 ```
@@ -255,7 +255,7 @@ Private key (16 bytes): 0x20204147454e5420502e202331333337
 Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-###### enlist() execution
+##### enlist() execution
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
 
 ```bash
@@ -284,7 +284,7 @@ blobGasUsed
 to                   0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
 ```
 
-###### Verify isSolved()
+##### Verify isSolved()
 isSolved() function is to confirm whether the player address has successfully performed the enlisted in the enlist() function or not
 
 ```solidity
