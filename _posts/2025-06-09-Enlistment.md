@@ -6,7 +6,7 @@ category: [CTF, Blockchain]
 tags: [HTB, Smart Contract, Solidity, Foundry]
 ---
 
-## Key Lesson:
+## Key Lesson
 * Smart Contract Basics
 	- Visibility in Solidity Programming Language
 	- How to compile solidity file
@@ -16,17 +16,17 @@ tags: [HTB, Smart Contract, Solidity, Foundry]
 	- Get Storage
 	- Keccak (Hash arbitrary data using keccak-256)
 
-## Proof of Concept:
+## Proof of Concept
 
 Port 42270 is used for rpc url
 
-```bash
+```solidity
 $ RPC URL: http://94.237.59.89:42270/
 ```
 
 Lets use nc on port 59016
 
-```bash
+```solidity
 $ nc 94.237.59.89 59016
 1 - Get connection information
 2 - Restart instance
@@ -42,7 +42,7 @@ Setup contract     : 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16
 RPC URL: http://94.237.59.89:42270/
 ```
 
-#### setup.sol
+### setup.sol
 Target Variables appears to be Enlistment Contract
 
 ```solidity
@@ -73,18 +73,18 @@ After further analysis, the **isSolved()** function's type data is **bool** whic
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
 
-```bash
+```solidity
 $ cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
-```bash
+```solidity
 $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
 0x000000000000000000000000748c5f75488b89e1871c7a86a59ba5139d99ea53
 
 0x748c5f75488b89e1871c7a86a59ba5139d99ea53
 ```
 
-#### Enlistment.sol
+### Enlistment.sol
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -109,7 +109,7 @@ contract Enlistment {
 }
 ```
 
-##### enlist() function
+#### enlist() function
 
 Lets analyze this enlist() function. 
 
@@ -125,33 +125,33 @@ function enlist(bytes32 _proofHash) public {
     }
 ```
 
-##### Getting publicKey
+#### Getting publicKey
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
-```bash
+```solidity
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()"
 ```
 
-```bash
+```solidity
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
 0x454e4c4953545f52455153542062793a00000000000000000000000000000000
 ```
 
 Lets just call the publicKey()(bytes16)
 
-```bash
+```solidity
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 ```
 
-```bash
+```solidity
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
 0x454e4c4953545f52455153542062793a
 ```
 
-##### Getting privateKey
+#### Getting privateKey
 Lets call the privateKey()
 
-```bash
+```solidity
 $ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 
@@ -162,7 +162,6 @@ Got the following error
 
 **Error: server returned an error response: error code 3: execution reverted, data: "0x"**
 
-
 After further analysis, the main problem is the privateKey's visibility is **not public** but use **private** so it cannot be called directly using cast call
 
 REMEMBER: 
@@ -170,7 +169,7 @@ REMEMBER:
 
 Lets check the storage? Requires solidity compiler version 0.8.29
 
-```bash
+```solidity
 $ ./solc-static-linux --storage-layout Enlistment.sol              
 Error: Source file requires different compiler version (current compiler is 0.8.25+commit.b61c2a91.Linux.g++) - note that nightly builds are considered to be strictly less than the released version                                                                                                                                             
  --> Enlistment.sol:3:1:                                                                                                                                                 
@@ -185,7 +184,7 @@ Lets download the latest version (0.8.30) from github
 
 Lets use solidity compiler to get the slot for private key
 
-```bash
+```solidity
 $ ./solc-static-linux --storage-layout Enlistment.sol
 
 ======= Enlistment.sol:Enlistment =======
@@ -195,11 +194,11 @@ Contract Storage Layout:
 
 Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
 
-```bash
+```solidity
 $ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
 
-```bash
+```solidity
 $ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
 ```
@@ -229,16 +228,16 @@ Lets switch the private key and public key order. In this case, (privateKey, pub
 
 Lets use cast keccak to get proofHash() for this
 
-```bash
+```solidity
 $ cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 ```
 
-```bash
+```solidity
 $ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-##### Information Collected
+#### Information Collected
 So we got the following information to moved on
 
 ```
@@ -255,14 +254,14 @@ Private key (16 bytes): 0x20204147454e5420502e202331333337
 Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 ```
 
-##### enlist() execution
+#### enlist() execution
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
 
-```bash
+```solidity
 $ cast send -r <RPC_URL> --private-key <PLAYER_PRIVATE_KEY> <ENLISTMENT_CONTRACT> "enlist(bytes32)" <PROOF_HASH_FROM_KECCAK>
 ```
 
-```bash
+```solidity
 $ cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
 blockHash            0xb98c1b933a0dc7f6ad80978cc48832689621d2a4648b29fc02588645d299f869
@@ -284,7 +283,7 @@ blobGasUsed
 to                   0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
 ```
 
-##### Verify isSolved()
+#### Verify isSolved()
 isSolved() function is to confirm whether the player address has successfully performed the enlisted in the enlist() function or not
 
 ```solidity
@@ -295,11 +294,11 @@ isSolved() function is to confirm whether the player address has successfully pe
 
 Lets verify the isSolved() function if returns **true** with cast call with player address. Yep it returns **true** (0x1)
 
-```bash
+```solidity
 $ cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 ```
 
-```bash
+```solidity
 $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
@@ -307,7 +306,7 @@ $ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A
 ## Flag
 Get the flag
 
-```bash
+```solidity
 $ nc 94.237.59.89 59016                                                                                                                     
 1 - Get connection information
 2 - Restart instance
