@@ -49,7 +49,7 @@ RPC URL: http://94.237.59.89:42270/
 
 # setup.sol (Enlistment)
 Target Variables appears to be Enlistment Contract
-```
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.29;
@@ -77,11 +77,11 @@ contract Setup {
 After further analysis, the **isSolved()** function's type data is **bool** which returns either **true or false**. It means that we must make sure that the player is actually done the transaction in Enlistement.sol
 
 We need to call the Target()  to get the Enlistement contract. Lets call the TARGET() function. This is used for enlistment contract
-```
+```toml
 cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "TARGET()"
 0x000000000000000000000000748c5f75488b89e1871c7a86a59ba5139d99ea53
@@ -90,7 +90,7 @@ cast call -r <RPC_URL> <SETUP_CONTRACT> "TARGET()"
 ```
 
 # Enlistment.sol (Enlistment)
-```
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.29;
@@ -121,7 +121,7 @@ Lets analyze this enlist() function.
 In authorized variable, type data it uses is **bool** which returns either **true or false** by comparing the proofHash with the public key and private key by using keccak256. 
 - If it match, the transaction get authorized.
 - If it doesn't match, it returns Invalid proof hash
-```
+```solidity
 function enlist(bytes32 _proofHash) public {
         bool authorized = _proofHash == keccak256(abi.encodePacked(publicKey, privateKey));
         require(authorized, "Invalid proof hash");
@@ -132,22 +132,22 @@ function enlist(bytes32 _proofHash) public {
 #### Getting publicKey (Enlistment)
 Lets try to call the publicKey() function. there is 0000 at the end of it if you dont provide the bytes16. By default it use bytes32
 
-```
+```toml
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()"
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()" 
 0x454e4c4953545f52455153542062793a00000000000000000000000000000000
 ```
 
 Lets just call the publicKey()(bytes16)
-```
+```toml
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "publicKey()(bytes16)" 
 0x454e4c4953545f52455153542062793a
@@ -155,7 +155,7 @@ cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> "publicKey()(bytes16)"
 
 #### Getting privateKey (Enlistment)
 Lets call the privateKey()
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "privateKey()" 
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
@@ -165,7 +165,7 @@ Error: server returned an error response: error code 3: execution reverted, data
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 ```
 Got the following error
-```
+```toml
 Error: server returned an error response: error code 3: execution reverted, data: "0x"
 ```
 
@@ -203,11 +203,11 @@ Contract Storage Layout:
 ```
 
 Lets get the publicKey and privateKey in this storage. This is 32 byte hex which combines the public key and private key
-```
+```toml
 cast call -r <RPC_URL> <ENLISTMENT_CONTRACT> <SLOT>
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast storage -r http://94.237.59.89:42270/ 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 0
 0x20204147454e5420502e202331333337454e4c4953545f52455153542062793a
@@ -222,7 +222,7 @@ Private key: 0x20204147454e5420502e202331333337
 ![[Split public key and private key]](/assets/img/posts/2025-06-09-Enlistment/Split public key and private key.png)__Split public key and private key__
 
 After further analysis, we need to pack the public key first then privateKey as the last one. 
-```
+```solidity
 keccak256(abi.encodePacked(publicKey, privateKey));
 ```
 
@@ -232,11 +232,11 @@ Lets switch the private key and public key order. In this case, (privateKey, pub
 ```
 
 Lets use cast keccak to get proofHash() for this
-```
+```toml
 cast keccak 0x<PUBLIC_KEY><PRIVATE_KEY>
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast keccak 0x454e4c4953545f52455153542062793a20204147454e5420502e202331333337
 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
@@ -260,11 +260,11 @@ Proof Hash: 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
 #### enlist() execution (Enlistment)
 Since we got the proof hash, Lets use cast send enlist() function. As the result it is successful
-```
+```toml
 cast send -r <RPC_URL> --private-key <PLAYER_PRIVATE_KEY> <ENLISTMENT_CONTRACT> "enlist(bytes32)" <PROOF_HASH_FROM_KECCAK>
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast send -r http://94.237.59.89:42270/ --private-key 0x017207f107a58ef37b896d152a984d68ab7d66bc63ee4dea5f1e274a31c7ed36 0x748C5F75488b89E1871C7a86a59Ba5139D99eA53 "enlist(bytes32)" 0x9d3f5567a25a1b5b3bc330351dcde6b026d5d22b120f52f040459d5794c48c59
 
@@ -289,7 +289,7 @@ to                   0x748C5F75488b89E1871C7a86a59Ba5139D99eA53
 
 #### Verify isSolved() (Enlistment)
 isSolved() function is to confirm whether the player address has successfully performed the enlisted in the enlist() function or not
-```
+```solidity
 Setup.sol
 
  function isSolved() public view returns (bool) {
@@ -298,11 +298,11 @@ Setup.sol
 ```
 
 Lets verify the isSolved() function if returns **true** with cast call with player address. Yep it returns **true** (0x1)
-```
+```toml
 cast call -r <RPC_URL> <SETUP_CONTRACT> "isSolved()" <PLAYER_ADDRESS>
 ```
 
-```
+```toml
 ┌──(kali㉿kali)-[~]
 └─$ cast call -r http://94.237.59.89:42270/ 0x4aA52fFA9F1E3a764A8C07512D74d96A578A2D16 "isSolved()" 0x691Ef9941563e8F915a4794e3D55dCa2d8C67109
 0x0000000000000000000000000000000000000000000000000000000000000001
