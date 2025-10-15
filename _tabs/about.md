@@ -5,4 +5,6 @@ order: 4
 
 ## HEAVEN's DAWN
 Brief explanation about myself:
-* Likes to Play Games, Watch Anime, Read Books
+* FPS, RPG, MMORPG, or Turn-Based Gamer enthusiast
+* Wanna be Smart Contract enthusiast
+* Watching Anime and Reading Manga is My Live
