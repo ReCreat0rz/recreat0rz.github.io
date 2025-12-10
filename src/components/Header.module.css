@@ -1,0 +1,66 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    height: var(--header-height);
+    background-color: rgba(6, 4, 10, 0.8);
+    /* Matches new bg-color with opacity */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+    /* Subtle purple border */
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    letter-spacing: -0.02em;
+}
+
+.logo a:hover {
+    color: var(--text-secondary);
+}
+
+.nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav a {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.nav a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0 1rem;
+        height: 60px;
+        /* Search slight reduction */
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .nav ul {
+        gap: 1rem;
+        /* Reduce gap */
+    }
+
+    .nav a {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+        /* Better touch target */
+    }
+}
