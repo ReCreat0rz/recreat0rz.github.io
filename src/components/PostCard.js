@@ -1,15 +1,12 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import styles from './PostCard.module.css';
-import ClientOnly from './ClientOnly';
 
 const PostCard = ({ post }) => {
     return (
         <Link href={`/blog/${post.slug}`} className={styles.card}>
             <h2 className={styles.title}>{post.title}</h2>
-            <ClientOnly fallback={<span className={styles.date}>Loading...</span>}>
-                <span className={styles.date}>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
-            </ClientOnly>
+            <span className={styles.date} suppressHydrationWarning>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
             <p className={styles.excerpt}>{post.excerpt}</p>
             {post.tags && post.tags.length > 0 && (
                 <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
