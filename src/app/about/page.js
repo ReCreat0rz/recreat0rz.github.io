@@ -48,16 +48,22 @@ export default function About() {
                     </h2>
                     <div style={{ lineHeight: '1.8', color: 'var(--text-color)' }}>
                         <p style={{ marginBottom: '1.5rem' }}>
-                            Hi, welcome to my blog! My name is <strong style={{ color: 'white' }}>Raihan</strong>, also known by the codename <strong style={{ color: 'white' }}>rei</strong>. The purpose of this blog is to document and curate my ideas, so I can revisit them in the future in case I forget :D.
+                            Yo, welcome to my blog!
+                            <br />
+                            I’ve been in cybersecurity for 3+ years, mainly doing offensive security—which is basically just <strong style={{ color: 'var(--accent-color)' }}>“IT’S NOT A BUG, IT’S A VULNERABILITY SPEEDRUN ANY% - DEV forgot to validate anything — new vuln unlocked.”</strong>
                         </p>
-                        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>Brief explanation about myself:</p>
+                        <p style={{ marginBottom: '2rem' }}>
+                            Most of my learning comes from clicking one thing, everything breaking, and suddenly I'm stuck in <span style={{ color: 'var(--primary-color)' }}>troubleshooting + debugging</span> I never asked for — the true final boss.
+                        </p>
+
+                        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Lore Dump About Me:</p>
                         <ul style={{ listStyle: 'disc', paddingLeft: '1.5rem', marginBottom: '1rem' }}>
                             {[
-                                "FPS, RPG, MMORPG, and Turn-Based game enthusiast",
-                                "Actively focused on Blockchain-related CTF challenges",
-                                "Open to Game-category CTFs and iOS exploitation challenges",
-                                "Watching anime and Reading manga enthusiast",
-                                "Ineffa Mains"
+                                "Plays FPS, RPG, MMORPG, and turn-based games because committing to one genre is too mainstream",
+                                "Currently trapped in the blockchain CTF saga",
+                                "Says “yeah why not” to game CTFs and iOS exploitation like it’s DLC content",
+                                "Watches anime and reads manga for emotional support",
+                                "Ineffa mains — no regrets, only pain"
                             ].map((item, index) => (
                                 <li key={index} style={{ marginBottom: '0.5rem', color: 'var(--text-color)' }}>
                                     {item}
