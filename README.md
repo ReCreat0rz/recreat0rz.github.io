@@ -1,3 +1,5 @@
+# My Personal Blog
+
 ## 🚀 Initialization (Run Locally)
 
 To spin up a local instance of this system:
