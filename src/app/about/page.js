@@ -61,7 +61,7 @@ export default function About() {
                             {[
                                 "Plays FPS, RPG, MMORPG, and turn-based games because committing to one genre is too mainstream",
                                 "Currently trapped in the blockchain CTF saga",
-                                "Says “yeah why not” to game CTFs and iOS exploitation like it’s DLC content",
+                                "Says “yeah why not” to game CTFs, AI Security CTFs, or iOS exploitation like it’s DLC content",
                                 "Watches anime and reads manga for emotional support",
                                 "Ineffa mains — no regrets, only pain"
                             ].map((item, index) => (
