@@ -4,21 +4,25 @@
     align-items: center;
     padding: 0 2rem;
     height: var(--header-height);
-    background-color: rgba(6, 4, 10, 0.8);
-    /* Matches new bg-color with opacity */
+    background-color: rgba(5, 5, 5, 0.8);
+    /* Matches new bg-color */
     position: sticky;
     top: 0;
     z-index: 100;
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(147, 51, 234, 0.1);
-    /* Subtle purple border */
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    /* Subtle Cyan border */
 }
 
 .logo {
+    font-family: var(--font-mono);
+    /* ReCreat0rz brand font */
     font-weight: 700;
     font-size: 1.2rem;
-    color: white;
-    letter-spacing: -0.02em;
+    color: var(--primary-color);
+    /* Cyber Cyan */
+    letter-spacing: -0.05em;
+    text-shadow: var(--glow-text);
 }
 
 .logo a:hover {
@@ -32,13 +36,19 @@
 }
 
 .nav a {
-    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    /* Cyber font */
+    font-size: 0.9rem;
     color: var(--text-secondary);
     font-weight: 500;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
 .nav a:hover {
-    color: white;
+    color: var(--primary-color);
+    text-shadow: var(--glow-text);
     text-decoration: none;
 }
 
