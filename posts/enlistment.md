@@ -14,14 +14,15 @@ tags:
 ---
 
 ## Key Lesson
-* Smart Contract Basics
-	- Visibility in Solidity Programming Language
-	- How to compile solidity file
-* Foundry
-	- Call Function
-	- Send Transaction
-	- Get Storage
-	- Keccak (Hash arbitrary data using keccak-256)
+
+- **Smart Contract Basics**
+    - Visibility in Solidity Programming Language
+    - How to compile solidity file
+- **Foundry**
+    - Call Function
+    - Send Transaction
+    - Get Storage
+    - Keccak (Hash arbitrary data using keccak-256)
 
 ## Proof of Concept
 

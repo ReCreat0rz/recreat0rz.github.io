@@ -7,13 +7,14 @@ tags: [HTB, Smart Contract, Solidity, Foundry, EIP-7702]
 ---
 
 ## Key Lesson
-* Smart Contract
-	- Understanding about EIP-7702 (PRIORITY)
-	- How to compile solidity file
-* Foundry
-  - Call Function
-  - Sign Transaction (Add the other's EOA to the player's EOA)
-  - Send Transaction (Register Gateway, Deposit Player's ETH Quota, and Deliver Gateway)
+
+- **Smart Contract**
+    - Understanding about EIP-7702 (PRIORITY)
+    - How to compile solidity file
+- **Foundry**
+    - Call Function
+    - Sign Transaction (Add the other's EOA to the player's EOA)
+    - Send Transaction (Register Gateway, Deposit Player's ETH Quota, and Deliver Gateway)
 
 
 # TLDR
