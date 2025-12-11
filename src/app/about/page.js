@@ -23,8 +23,8 @@ export default function About() {
             <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                 <div style={{ flex: '0 0 320px' }}>
                     <Image
-                        src="/profile-v2.jpg"
-                        alt="Profile Picture"
+                        src="/ineffa-about.jpg"
+                        alt="Ineffa"
                         width={320}
                         height={453}
                         style={{

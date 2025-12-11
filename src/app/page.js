@@ -43,14 +43,7 @@ export default function Home() {
  / _, _/  __/ /___/ /  /  __/ /_/ / /_/ // / /    / /_ 
 /_/ |_|\\___/\\____/_/   \\___/\\__,_/\\__/\\___/_/    /___/ 
 `}
-          <span style={{
-            display: 'block',
-            marginTop: '1.5rem',
-            fontSize: '0.8rem', // Larger than the 0.55rem ASCII
-            color: 'var(--text-secondary)',
-            letterSpacing: '0.05em',
-            fontWeight: 'bold'
-          }}>
+          <span className="ascii-subtitle">
             &lt; CTF Player | Smart Contract Auditor | Penetration Tester &gt;
           </span>
         </pre>

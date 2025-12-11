@@ -35,7 +35,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} ${ubuntuMono.variable}`}>
         <Header />
         <main style={{ minHeight: '100vh', paddingTop: '1rem' }}>

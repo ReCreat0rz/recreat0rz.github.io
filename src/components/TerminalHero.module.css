@@ -274,13 +274,11 @@
     }
 
     .fileList {
-        display: block;
-        /* Fallback to block on mobile if grid is too wide */
-        white-space: pre;
+        /* Keep grid layout but allow scroll */
+        display: grid;
         overflow-x: auto;
-    }
-
-    .fileRow {
-        display: block;
+        padding-bottom: 0.5rem;
+        /* Space for scrollbar */
+        min-width: 100%;
     }
 }

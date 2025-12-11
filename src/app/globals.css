@@ -382,4 +382,20 @@ pre code {
     font-size: 16px;
     padding: 0.8rem;
   }
+
+  .ascii-subtitle {
+    font-size: 0.45rem !important;
+    /* Smaller on mobile matching ASCII art size approx */
+    margin-top: 1rem !important;
+  }
+}
+
+/* ASCII Subtitle Default (Desktop) */
+.ascii-subtitle {
+  display: block;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  font-weight: 700;
 }
