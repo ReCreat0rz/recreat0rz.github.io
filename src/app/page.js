@@ -20,7 +20,7 @@ export default function Home() {
 
       {/* ReCreat0rz ASCII Art */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-        <pre style={{
+        <pre suppressHydrationWarning style={{
           background: 'var(--card-bg)',
           border: '1px solid var(--border-color)',
           borderLeft: '2px solid var(--primary-color)',
