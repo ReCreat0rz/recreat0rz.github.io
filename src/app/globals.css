@@ -283,12 +283,21 @@ pre code {
   transition: color 0.2s;
   cursor: pointer;
   display: block;
-  /* Ensure clickable area */
   line-height: 1.4;
 }
 
 .toc a:hover {
   color: var(--primary-color);
+}
+
+/* Mobile TOC - Hidden on desktop */
+.toc-mobile {
+  display: none;
+}
+
+/* Desktop TOC - Shown on desktop */
+.toc-desktop {
+  display: block;
 }
 
 /* Mobile Responsiveness */
@@ -300,27 +309,34 @@ pre code {
     flex-direction: column;
   }
 
+  /* Hide desktop TOC on mobile */
+  .toc-desktop {
+    display: none;
+  }
+
+  /* Show mobile TOC below title */
+  .toc-mobile {
+    display: block;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+
+  .toc-mobile .toc {
+    position: relative;
+    top: 0;
+    max-height: 250px;
+    border-left: none;
+    padding-left: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
   /* Fix fileRow display for mobile if needed */
   .fileRow {
     display: block;
-  }
-
-  .toc {
-    position: relative;
-    /* Reset sticky */
-    top: 0;
-    max-height: 300px;
-    /* Limit height on mobile */
-    border-left: none;
-    /* Remove side border */
-    border-bottom: 1px solid var(--border-color);
-    /* Add bottom separator */
-    padding-left: 0;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    order: -1;
-    /* Move to top */
   }
 }
 

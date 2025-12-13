@@ -53,6 +53,11 @@ export default async function Post({ params }) {
                 )}
             </header>
 
+            {/* Mobile TOC - Shows only on mobile, below title */}
+            <div className="toc-mobile">
+                <TableOfContents contentHtml={postData.contentHtml} />
+            </div>
+
             <div className="blog-layout">
                 <div
                     className="blog-content"
@@ -60,7 +65,8 @@ export default async function Post({ params }) {
                     style={{ lineHeight: '1.8', maxWidth: '800px' }}
                 />
 
-                <aside>
+                {/* Desktop TOC - Shows only on desktop, in sidebar */}
+                <aside className="toc-desktop">
                     <TableOfContents contentHtml={postData.contentHtml} />
                 </aside>
             </div>
@@ -88,8 +94,6 @@ export default async function Post({ params }) {
                     </Link>
                 ) : <div />}
             </div>
-
-            {/* Mobile Responsive Styles handled via global CSS or verifying readability on small screens */}
         </article >
     );
 }
