@@ -16,13 +16,6 @@ export default function Posts() {
                 }}>
                     All Posts
                 </h1>
-                <p style={{
-                    color: 'var(--text-secondary)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.95rem'
-                }}>
-                    {allPostsData.length} writeups and notes
-                </p>
                 <div style={{
                     height: '2px',
                     background: 'linear-gradient(90deg, var(--primary-color), transparent)',
