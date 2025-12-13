@@ -8,17 +8,6 @@ tags: [HTB, Smart Contract, Solidity, Foundry, EIP-7702]
 
 ## Enlistment
 
-## Key Lesson
-
-- **Smart Contract Basics**
-    - Visibility in Solidity Programming Language
-    - How to compile solidity file
-- **Foundry**
-    - Call Function
-    - Send Transaction
-    - Get Storage
-    - Keccak (Hash arbitrary data using keccak-256)
-
 ## Proof of Concept
 
 Port 42270 is used for rpc url
@@ -321,17 +310,6 @@ HTB{gg_wp_w3lc0me_t0_th3_t34m}
 ---
 
 ## Spectral
-
-## Key Lesson
-
-- **Smart Contract**
-    - Understanding about EIP-7702 (PRIORITY)
-    - How to compile solidity file
-- **Foundry**
-    - Call Function
-    - Sign Transaction (Add the other's EOA to the player's EOA)
-    - Send Transaction (Register Gateway, Deposit Player's ETH Quota, and Deliver Gateway)
-
 
 # TLDR
 Just jump into Learn from another writeup (Spectral) and ignore the debugging option, since i did not manage to solve this ctf challenge.

@@ -20,10 +20,6 @@ tags: [NextCTF, Sepolia, Etherscan, XOR Encryption, Foundry Tool, Solidity]
 
 **Network:** Sepolia Testnet
 
-### Key Lesson
-
-- How to check transaction in Sepolia Testnet
-
 ### Solution
 
 Lets check the sepolia.etherscan.io
@@ -49,13 +45,6 @@ nexus{Tr4c3_Th3_Tr4ns4ct10n}
 ### Problem Set
 
 > A smart contract emitted an event containing unknown data. Recover the original value.
-
-### Key Lesson
-
-- Solidity/Ethereum ABI
-- Events in Solididy
-- Foundry (cast)
-- XOR Encryption
 
 ### Solution
 
