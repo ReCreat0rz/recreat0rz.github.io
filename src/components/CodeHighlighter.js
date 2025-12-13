@@ -7,6 +7,7 @@ import cairo from 'highlightjs-cairo';
 import javascript from 'highlight.js/lib/languages/javascript';
 import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
+import python from 'highlight.js/lib/languages/python';
 
 // Import a dark theme (Atom One Dark is popular for Solidity/Crypto)
 import 'highlight.js/styles/atom-one-dark.css';
@@ -39,6 +40,7 @@ export default function CodeHighlighter() {
         if (!hljs.getLanguage('javascript')) hljs.registerLanguage('javascript', javascript);
         if (!hljs.getLanguage('bash')) hljs.registerLanguage('bash', bash);
         if (!hljs.getLanguage('json')) hljs.registerLanguage('json', json);
+        if (!hljs.getLanguage('python')) hljs.registerLanguage('python', python);
 
         // Highlight all code blocks
         try {
