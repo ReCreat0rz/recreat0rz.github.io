@@ -98,6 +98,8 @@ Result (with `.` for non-printable bytes):
 YROBDLoehu~hstsyphJ
 ```
 
+![Hex to ASCII Result](/assets/img/posts/silent_flag/hex_to_ascii_result.png)
+
 After further analysis, the `data` is fairly readable, with some of the non-printable character. This assumes that it might use the XOR Encryption for the following reason:
 - Some ASCII letters are visible
 - Non-printable bytes appear where numbers/symbols should be
