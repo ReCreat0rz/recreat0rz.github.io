@@ -103,7 +103,7 @@ This function will check:
 This function will check:
 - Gateaway Status must be in **"Idle Mode"** .
 - The amount must more than 0
-- Verifies the amount must less or equal than Gateaway Quota (**<=10**) to perform delivery.
+- Verifies the amount must less or equal than Gateaway Quota (**&lt;=10**) to perform delivery.
 - Sets Control Unit Status to **"Delivering Mode"** indicated by **2** during delivery process.
 	- As the consequences, Control Unit Current Capacity is reduced
 - Substracts the amount from control's unit currentUnit Capacity before calling deliverEnergy()
@@ -114,7 +114,7 @@ This function will check:
 
 ### failSaveMonitor (Spectral)
 failSafeMonitor function will trigger: 
-- If current capacity is less or equal than failsafe threshold in this case **<= 10 ether**
+- If current capacity is less or equal than failsafe threshold in this case **&lt;= 10 ether**
 - Control Unit Status is equal to "Emergency" which is **3** in order to trigger the "**Emergency Mode**"
   
 ## Source Code Review (Spectral)
@@ -659,7 +659,7 @@ The attack path for this exploit is:
 After further analysis regarding the error from debugging
 - It seems that we need to remove the **register()** and **deposit()** function so it will reduce the gas fee we need to deploy plus we can call that function directly in VCNK.sol.
 - It seems that during looping the **reentryCount** in **deliverEnergy()** function
-	-  Make sure `target.requestPowerDelivery(10 ether, address(this));` looks the same as the `exploit()` function if **reentryCount** is less than **< 10**.
+	-  Make sure `target.requestPowerDelivery(10 ether, address(this));` looks the same as the `exploit()` function if **reentryCount** is less than **&lt; 10**.
 Key Note:
 - **initialize()** is executed to populate player's EOA storage with Exploit.sol's variables after its code is added to player's EOA
 - **exploit()** initiates reentrancy attack by sending initial requestPowerDelivery() function to call VCNK.sol requesting 10 ETH which then calls Exploit.sol's deliverEnergy() implementation

@@ -13,8 +13,8 @@ export function getSortedPostsData() {
     }
 
     const fileNames = fs.readdirSync(postsDirectory);
-    const allPostsData = fileNames.map((fileName) => {
-        const id = fileName.replace(/\.md$/, '');
+    const allPostsData = fileNames.filter(fileName => /\.(md|mdx)$/.test(fileName)).map((fileName) => {
+        const id = fileName.replace(/\.(md|mdx)$/, '');
 
         const fullPath = path.join(postsDirectory, fileName);
         const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -37,7 +37,12 @@ export function getSortedPostsData() {
 }
 
 export async function getPostData(slug) {
-    const fullPath = path.join(postsDirectory, `${slug}.md`);
+    // Check for .md or .mdx file
+    let fullPath = path.join(postsDirectory, `${slug}.md`);
+    if (!fs.existsSync(fullPath)) {
+        fullPath = path.join(postsDirectory, `${slug}.mdx`);
+    }
+
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
     const matterResult = matter(fileContents);
@@ -62,7 +67,8 @@ export async function getPostData(slug) {
 
     return {
         slug,
-        contentHtml,
+        contentHtml, // Kept for Table of Contents
+        content: matterResult.content, // Raw content for MDX
         ...matterResult.data,
         prevPost,
         nextPost,

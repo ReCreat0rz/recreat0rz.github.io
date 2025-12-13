@@ -1,3 +1,4 @@
+import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getPostData, getSortedPostsData } from '@/lib/posts';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -59,11 +60,29 @@ export default async function Post({ params }) {
             </div>
 
             <div className="blog-layout">
-                <div
-                    className="blog-content"
-                    dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
-                    style={{ lineHeight: '1.8', maxWidth: '800px' }}
-                />
+                <div className="blog-content" style={{ lineHeight: '1.8', maxWidth: '800px' }}>
+                    <MDXRemote
+                        source={postData.content}
+                        components={{
+                            h2: ({ children }) => {
+                                const id = children
+                                    ?.toString()
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9]+/g, '-')
+                                    .replace(/(^-|-$)/g, '');
+                                return <h2 id={id}>{children}</h2>;
+                            },
+                            h3: ({ children }) => {
+                                const id = children
+                                    ?.toString()
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9]+/g, '-')
+                                    .replace(/(^-|-$)/g, '');
+                                return <h3 id={id}>{children}</h3>;
+                            }
+                        }}
+                    />
+                </div>
 
                 {/* Desktop TOC - Shows only on desktop, in sidebar */}
                 <aside className="toc-desktop">
