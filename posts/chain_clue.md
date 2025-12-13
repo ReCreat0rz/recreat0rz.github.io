@@ -32,6 +32,8 @@ https://sepolia.etherscan.io/tx/0x1c1e14180c2e5dceefc260208199e23a8c61524dd54bd2
 
 From there i got the flag
 
+![Etherscan Transaction](/assets/img/posts/chain_clue/etherscan_flag.png)
+
 ## Flag
 
 ```
