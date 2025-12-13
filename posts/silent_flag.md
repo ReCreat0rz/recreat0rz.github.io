@@ -126,6 +126,8 @@ for key in range(256):
 
 Here is the output
 
+![XOR Bruteforce Output](/assets/img/posts/silent_flag/xor_bruteforce_output.png)
+
 ```
 Key 0x37: nexus{X0R_4BI_D3C0D1NG_2025}
 ```
