@@ -45,6 +45,53 @@ export default function CodeHighlighter() {
         // Highlight all code blocks
         try {
             hljs.highlightAll();
+
+            // Add Copy Buttons
+            document.querySelectorAll('pre').forEach((block) => {
+                // Prevent duplicate buttons
+                if (block.querySelector('.copy-button')) return;
+
+                // Make container relative for positioning
+                block.style.position = 'relative';
+
+                const button = document.createElement('button');
+                button.className = 'copy-button';
+                button.innerText = 'Copy';
+                button.style.position = 'absolute';
+                button.style.top = '8px';
+                button.style.right = '8px';
+                button.style.background = 'rgba(255, 255, 255, 0.1)';
+                button.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                button.style.borderRadius = '4px';
+                button.style.color = '#ccc';
+                button.style.fontSize = '0.75rem';
+                button.style.padding = '4px 8px';
+                button.style.cursor = 'pointer';
+                button.style.transition = 'all 0.2s';
+                button.style.fontFamily = 'monospace';
+
+                button.addEventListener('click', async () => {
+                    const code = block.querySelector('code')?.innerText || block.innerText;
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.innerText = 'Copied!';
+                        button.style.background = 'rgba(76, 175, 80, 0.3)'; // Greenish tint
+                        button.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+
+                        setTimeout(() => {
+                            button.innerText = 'Copy';
+                            button.style.background = 'rgba(255, 255, 255, 0.1)';
+                            button.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy!', err);
+                        button.innerText = 'Error';
+                    }
+                });
+
+                block.appendChild(button);
+            });
+
         } catch (e) {
             console.error("Highlighting failed", e);
         }
