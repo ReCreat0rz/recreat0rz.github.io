@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import PostCard from './PostCard';
+import styles from './PaginatedPostList.module.css';
 
 const POSTS_PER_PAGE = 5;
 
@@ -12,6 +13,7 @@ export default function PaginatedPostList({ posts }) {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedTag, setSelectedTag] = useState('all');
     const [sortOrder, setSortOrder] = useState('newest');
+    const [showFilters, setShowFilters] = useState(false);
 
     // Extract unique years, categories, and tags from posts
     const filterOptions = useMemo(() => {
@@ -113,24 +115,12 @@ export default function PaginatedPostList({ posts }) {
     };
 
     const hasActiveFilters = searchQuery || selectedYear !== 'all' || selectedCategory !== 'all' || selectedTag !== 'all';
-
-    const selectStyle = {
-        padding: '0.6rem 1rem',
-        background: '#0f0a16',
-        border: '1px solid var(--border-color)',
-        borderRadius: '6px',
-        color: '#fff',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.85rem',
-        outline: 'none',
-        cursor: 'pointer',
-        minWidth: '120px'
-    };
+    const activeFilterCount = [selectedYear !== 'all', selectedCategory !== 'all', selectedTag !== 'all'].filter(Boolean).length;
 
     return (
         <div>
             {/* Search Bar */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div className={styles.searchContainer}>
                 <input
                     type="text"
                     placeholder="🔍 Search posts..."
@@ -139,174 +129,110 @@ export default function PaginatedPostList({ posts }) {
                         setSearchQuery(e.target.value);
                         setCurrentPage(1);
                     }}
-                    style={{
-                        width: '100%',
-                        padding: '1rem',
-                        background: '#0f0a16',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '8px',
-                        color: '#fff',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1rem',
-                        outline: 'none',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                    }}
+                    className={styles.searchInput}
                 />
             </div>
 
+            {/* Filter Toggle Button (Mobile) */}
+            <button
+                className={styles.filterToggle}
+                onClick={() => setShowFilters(!showFilters)}
+            >
+                <span>⚙️ Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
+                <span>{showFilters ? '▲' : '▼'}</span>
+            </button>
+
             {/* Filters Row */}
-            <div style={{
-                display: 'flex',
-                gap: '0.75rem',
-                marginBottom: '1.5rem',
-                flexWrap: 'wrap',
-                alignItems: 'center'
-            }}>
-                {/* Year Filter */}
+            <div className={`${styles.filtersRow} ${showFilters ? styles.filtersVisible : ''}`}>
                 <select
                     value={selectedYear}
                     onChange={(e) => { setSelectedYear(e.target.value); setCurrentPage(1); }}
-                    style={selectStyle}
+                    className={styles.filterSelect}
                 >
-                    <option value="all">📅 All Years</option>
+                    <option value="all">📅 Year</option>
                     {filterOptions.years.map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>
 
-                {/* Category Filter */}
                 <select
                     value={selectedCategory}
                     onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-                    style={selectStyle}
+                    className={styles.filterSelect}
                 >
-                    <option value="all">📁 All Categories</option>
+                    <option value="all">📁 Category</option>
                     {filterOptions.categories.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
 
-                {/* Tag Filter */}
                 <select
                     value={selectedTag}
                     onChange={(e) => { setSelectedTag(e.target.value); setCurrentPage(1); }}
-                    style={selectStyle}
+                    className={styles.filterSelect}
                 >
-                    <option value="all">🏷️ All Tags</option>
+                    <option value="all">🏷️ Tag</option>
                     {filterOptions.tags.map(tag => (
                         <option key={tag} value={tag}>{tag}</option>
                     ))}
                 </select>
 
-                {/* Sort Order */}
                 <select
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
-                    style={selectStyle}
+                    className={styles.filterSelect}
                 >
-                    <option value="newest">⬇️ Newest First</option>
-                    <option value="oldest">⬆️ Oldest First</option>
+                    <option value="newest">⬇️ Newest</option>
+                    <option value="oldest">⬆️ Oldest</option>
                 </select>
 
-                {/* Clear Filters */}
                 {hasActiveFilters && (
-                    <button
-                        onClick={clearFilters}
-                        style={{
-                            padding: '0.6rem 1rem',
-                            background: 'rgba(239, 68, 68, 0.1)',
-                            border: '1px solid rgba(239, 68, 68, 0.3)',
-                            borderRadius: '6px',
-                            color: '#ef4444',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.85rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
-                        }}
-                    >
+                    <button onClick={clearFilters} className={styles.clearButton}>
                         ✕ Clear
                     </button>
                 )}
             </div>
 
             {/* Results Count */}
-            <div style={{
-                marginBottom: '1rem',
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.85rem'
-            }}>
-                Showing {filteredPosts.length} of {posts.length} posts
+            <div className={styles.resultsCount}>
+                {filteredPosts.length} of {posts.length} posts
             </div>
 
             {/* Posts List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', minHeight: '400px' }}>
+            <div className={styles.postsList}>
                 {currentPosts.length > 0 ? (
                     currentPosts.map((post) => (
                         <PostCard key={post.slug} post={post} />
                     ))
                 ) : (
-                    <div style={{
-                        color: 'var(--text-secondary)',
-                        fontFamily: 'var(--font-mono)',
-                        textAlign: 'center',
-                        padding: '3rem',
-                        background: 'var(--card-bg)',
-                        borderRadius: '12px',
-                        border: '1px solid var(--border-color)'
-                    }}>
+                    <div className={styles.emptyState}>
                         <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔍</div>
-                        No posts found matching your criteria
+                        No posts found
                     </div>
                 )}
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div style={{
-                    marginTop: '2.5rem',
-                    paddingTop: '1.5rem',
-                    borderTop: '1px solid var(--border-color)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
+                <div className={styles.pagination}>
                     <button
                         onClick={handlePrevious}
                         disabled={currentPage === 1}
-                        style={{
-                            padding: '0.6rem 1.2rem',
-                            background: currentPage === 1 ? 'transparent' : 'var(--card-bg)',
-                            color: currentPage === 1 ? '#666' : '#fff',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '6px',
-                            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-                            fontFamily: 'var(--font-mono)',
-                            transition: 'all 0.2s ease'
-                        }}
+                        className={styles.pageButton}
                     >
-                        ← Previous
+                        ←
                     </button>
 
-                    <span style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>
-                        Page {safeCurrentPage} of {totalPages}
+                    <span className={styles.pageInfo}>
+                        {safeCurrentPage} / {totalPages}
                     </span>
 
                     <button
                         onClick={handleNext}
                         disabled={currentPage >= totalPages}
-                        style={{
-                            padding: '0.6rem 1.2rem',
-                            background: currentPage >= totalPages ? 'transparent' : 'var(--card-bg)',
-                            color: currentPage >= totalPages ? '#666' : '#fff',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '6px',
-                            cursor: currentPage >= totalPages ? 'not-allowed' : 'pointer',
-                            fontFamily: 'var(--font-mono)',
-                            transition: 'all 0.2s ease'
-                        }}
+                        className={styles.pageButton}
                     >
-                        Next →
+                        →
                     </button>
                 </div>
             )}
