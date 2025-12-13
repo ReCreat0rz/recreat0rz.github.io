@@ -12,35 +12,33 @@ tags: [NextCTF, XOR Encryption, Foundry Tool, Solidity]
 
 ## Key Lesson
 
-- **Solidity/Ethereum ABI**
-    - Understanding Application Binary Interface structure
-    - Events in Solidity (indexed vs non-indexed parameters)
-- **Foundry**
-    - Using `cast` command to decode ABI data
-- **Cryptography**
-    - XOR Encryption basics and brute-forcing single-byte keys
+- Solidity/Ethereum ABI
+- Events in Solididy
+- Foundry (cast)
+- XOR Encryption
 
 ## Solution
-
-### Step 1: Analyze the ABI
 
 This is a **Solidity/Ethereum Smart Contract ABI (Application Binary Interface)**, which is used for interacting with smart contracts on EVM-compatible blockchains.
 
 The ABI defines:
+1. **`leak` function** - Takes a 32-byte identifier (`bytes32 id`) and triggers the `Stored` event. It has no return value.
+2. **`Stored` event** - Emitted when the function is called. The `id` parameter is **indexed** (stored in topics, searchable via event filters), while the `data` parameter is **not indexed** (stored in the data field, requires parsing).
 
-| Component | Description |
-|-----------|-------------|
-| `leak` function | Takes a 32-byte identifier (`bytes32 id`) and triggers the `Stored` event |
-| `Stored` event | Emitted when the function is called. `id` is **indexed** (searchable), `data` is **not indexed** |
-
-> **Note:** `nonpayable` state mutability means the function modifies blockchain state but does not accept ETH.
+**Note:** `nonpayable` state mutability means the function modifies blockchain state but does not accept ETH.
 
 ```json
 [
   {
     "type": "function",
     "name": "leak",
-    "inputs": [{ "name": "id", "type": "bytes32", "internalType": "bytes32" }],
+    "inputs": [
+      {
+        "name": "id",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
@@ -48,62 +46,68 @@ The ABI defines:
     "type": "event",
     "name": "Stored",
     "inputs": [
-      { "name": "id", "type": "bytes32", "indexed": true, "internalType": "bytes32" },
-      { "name": "data", "type": "bytes", "indexed": false, "internalType": "bytes" }
+      {
+        "name": "id",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "data",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
     ],
     "anonymous": false
   }
 ]
 ```
 
-### Step 2: Examine the Data
+Lets check the `data` file
 
-The `data` file contains the following encoded value:
+This file is responsible for `data` parameter
 
 ```
 0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001c59524f42444c6f07656803757e68730474077306797068050705024a00000000
 ```
 
-### Step 3: Decode the ABI
+Since this is encoded, lets use the `cast` command to decode the abi
 
-Since this is encoded, let's use the `cast` command to decode the ABI:
+Notes:
+- `f(bytes)` means that the return type is bytes
+- `-i` flag means we're decoding input data
 
 ```bash
 cast decode-abi -i "f(bytes)" 0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001c59524f42444c6f07656803757e68730474077306797068050705024a00000000
-```
 
-**Output:**
-```
 0x59524f42444c6f07656803757e68730474077306797068050705024a
 ```
 
-> **Flags used:**
-> - `f(bytes)` — specifies the return type is bytes
-> - `-i` — indicates we're decoding input data
+Lets try to convert this hex into ascii by removing the `0x`
 
-### Step 4: Convert Hex to ASCII
-
-Converting the hex to ASCII using [RapidTables](https://www.rapidtables.com/convert/number/hex-to-ascii.html):
+Link: https://www.rapidtables.com/convert/number/hex-to-ascii.html
 
 ```
 59524f42444c6f07656803757e68730474077306797068050705024a
 ```
 
-**Result** (with `.` for non-printable bytes):
+Result (with `.` for non-printable bytes):
+
 ```
-YROBDLo.eh.u~hs.t.s.yph...J
+YROBDLoehu~hstsyphJ
 ```
 
-### Step 5: Identify the Encryption
-
-After analysis, the data appears to use **XOR Encryption** for the following reasons:
+After further analysis, the `data` is fairly readable, with some of the non-printable character. This assumes that it might use the XOR Encryption for the following reason:
 - Some ASCII letters are visible
 - Non-printable bytes appear where numbers/symbols should be
 - XOR doesn't change byte count
 
-### Step 6: Brute-Force the XOR Key
+Lets find the XOR key by bruteforcing it using python.
 
-Let's find the XOR key by brute-forcing with Python:
+Note:
+- `isprintable()` filters out results with non-readable characters
+- This helps find the key that produces **readable English text**
 
 ```python
 #!/usr/bin/env python3
@@ -120,9 +124,8 @@ for key in range(256):
         pass
 ```
 
-> **Note:** `isprintable()` filters out results with non-readable characters, helping find the key that produces **readable English text**.
+Here is the output
 
-**Output:**
 ```
 Key 0x37: nexus{X0R_4BI_D3C0D1NG_2025}
 ```
