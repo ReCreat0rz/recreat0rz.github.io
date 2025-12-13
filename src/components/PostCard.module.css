@@ -1,44 +1,99 @@
 .card {
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     border-radius: 12px;
     background: var(--card-bg);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    border: 1px solid transparent;
+    gap: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--primary-color);
+    position: relative;
 }
 
 .card:hover {
     transform: translateY(-2px);
     background: #1e1b2e;
-    /* Slightly lighter purple for hover state */
     border-color: var(--primary-color);
-    box-shadow: 0 4px 20px rgba(147, 51, 234, 0.1);
-    /* Subtle purple glow */
+    box-shadow: 0 8px 30px rgba(147, 51, 234, 0.15);
 }
 
 .title {
-    font-size: 1.5rem;
-    margin-bottom: 0.2rem;
+    font-size: 1.4rem;
+    margin: 0;
     color: #fff;
     transition: color 0.2s ease;
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .card:hover .title {
     color: var(--primary-color);
 }
 
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .date {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.date::before {
+    content: '📅';
+    font-size: 0.75rem;
+}
+
+.category {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    background: rgba(147, 51, 234, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(147, 51, 234, 0.3);
 }
 
 .excerpt {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+}
+
+.tag {
+    font-size: 0.7rem;
+    background: rgba(0, 243, 255, 0.08);
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: var(--accent-color);
+    font-family: var(--font-mono);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.card:hover .tag {
+    background: rgba(0, 243, 255, 0.12);
+    border-color: rgba(0, 243, 255, 0.4);
 }
 
 @media (max-width: 768px) {
@@ -47,10 +102,15 @@
     }
 
     .title {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
     }
 
     .excerpt {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        -webkit-line-clamp: 3;
+    }
+
+    .meta {
+        gap: 0.5rem;
     }
 }

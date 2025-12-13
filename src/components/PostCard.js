@@ -6,22 +6,30 @@ const PostCard = ({ post }) => {
     return (
         <Link href={`/blog/${post.slug}`} className={styles.card}>
             <h2 className={styles.title}>{post.title}</h2>
-            <span className={styles.date} suppressHydrationWarning>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
+
+            <div className={styles.meta}>
+                <span className={styles.date} suppressHydrationWarning>
+                    {format(new Date(post.date), 'MMMM d, yyyy')}
+                </span>
+                {post.category && (
+                    <span className={styles.category}>
+                        {Array.isArray(post.category) ? post.category[0] : post.category}
+                    </span>
+                )}
+            </div>
+
             <p className={styles.excerpt}>{post.excerpt}</p>
+
             {post.tags && post.tags.length > 0 && (
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-                    {post.tags.map(tag => (
-                        <span key={tag} style={{
-                            fontSize: '0.75rem',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            padding: '2px 8px',
-                            borderRadius: '12px',
-                            color: 'var(--text-secondary)',
-                            fontFamily: 'var(--font-mono)'
-                        }}>
+                <div className={styles.tags}>
+                    {post.tags.slice(0, 4).map(tag => (
+                        <span key={tag} className={styles.tag}>
                             #{tag}
                         </span>
                     ))}
+                    {post.tags.length > 4 && (
+                        <span className={styles.tag}>+{post.tags.length - 4}</span>
+                    )}
                 </div>
             )}
         </Link>
