@@ -72,10 +72,10 @@ export default function CodeHighlighter() {
 
                 button.addEventListener('click', async () => {
                     const code = block.querySelector('code')?.innerText || block.innerText;
-                    try {
-                        await navigator.clipboard.writeText(code);
+
+                    const showSuccess = () => {
                         button.innerText = 'Copied!';
-                        button.style.background = 'rgba(76, 175, 80, 0.3)'; // Greenish tint
+                        button.style.background = 'rgba(76, 175, 80, 0.3)';
                         button.style.borderColor = 'rgba(76, 175, 80, 0.5)';
 
                         setTimeout(() => {
@@ -83,9 +83,47 @@ export default function CodeHighlighter() {
                             button.style.background = 'rgba(255, 255, 255, 0.1)';
                             button.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                         }, 2000);
-                    } catch (err) {
+                    };
+
+                    const showError = (err) => {
                         console.error('Failed to copy!', err);
                         button.innerText = 'Error';
+                    };
+
+                    // Modern API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        try {
+                            await navigator.clipboard.writeText(code);
+                            showSuccess();
+                        } catch (err) {
+                            showError(err);
+                        }
+                    } else {
+                        // Fallback for non-secure contexts (HTTP)
+                        try {
+                            const textArea = document.createElement('textarea');
+                            textArea.value = code;
+
+                            // Avoid scrolling to bottom
+                            textArea.style.top = '0';
+                            textArea.style.left = '0';
+                            textArea.style.position = 'fixed';
+
+                            document.body.appendChild(textArea);
+                            textArea.focus();
+                            textArea.select();
+
+                            const successful = document.execCommand('copy');
+                            document.body.removeChild(textArea);
+
+                            if (successful) {
+                                showSuccess();
+                            } else {
+                                throw new Error('execCommand copy failed');
+                            }
+                        } catch (err) {
+                            showError(err);
+                        }
                     }
                 });
 
