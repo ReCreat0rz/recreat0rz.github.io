@@ -8,7 +8,7 @@ tags: [NextCTF, Sepolia, Etherscan, XOR Encryption, Foundry Tool, Solidity, Byte
 
 ## Chain Clue
 
-### Problem Set
+### Problem Set (Chain Clue)
 
 > Blockchain is fully transparent
 > 
@@ -20,7 +20,7 @@ tags: [NextCTF, Sepolia, Etherscan, XOR Encryption, Foundry Tool, Solidity, Byte
 
 **Network:** Sepolia Testnet
 
-### Solution
+### Solution (Chain Clue)
 
 Lets check the sepolia.etherscan.io
 
@@ -32,7 +32,7 @@ From there i got the flag
 
 ![Etherscan Transaction](/assets/img/posts/chain_clue/etherscan_flag.png)
 
-### Flag
+### Flag (Chain Clue)
 
 ```
 nexus{Tr4c3_Th3_Tr4ns4ct10n}
@@ -42,11 +42,11 @@ nexus{Tr4c3_Th3_Tr4ns4ct10n}
 
 ## Silent Flag
 
-### Problem Set
+### Problem Set (Silent Flag)
 
 > A smart contract emitted an event containing unknown data. Recover the original value.
 
-### Solution
+### Solution (Silent Flag)
 
 This is a **Solidity/Ethereum Smart Contract ABI (Application Binary Interface)**, which is used for interacting with smart contracts on EVM-compatible blockchains.
 
@@ -163,7 +163,7 @@ Here is the output
 Key 0x37: nexus{X0R_4BI_D3C0D1NG_2025}
 ```
 
-### Flag
+### Flag (Silent Flag)
 
 ```
 nexus{X0R_4BI_D3C0D1NG_2025}
@@ -173,7 +173,7 @@ nexus{X0R_4BI_D3C0D1NG_2025}
 
 ## Event Horizon
 
-### Problem Set
+### Problem Set (Event Horizon)
 
 > The Event Horizon rejects standard transactions. Analyze the contract, pierce the void, and synchronize your entropy.
 
@@ -182,7 +182,7 @@ nexus{X0R_4BI_D3C0D1NG_2025}
 - **Chain ID:** `31337`
 - **Contract:** `0x5FbDB2315678afecb367f032d93F642f64180aa3`
 
-### Solution
+### Solution (Event Horizon)
 
 Although i didn't managed to solve this challenge, Lets use `cast code` to get contract bytecode
 
@@ -325,7 +325,7 @@ python3 solve.py
 
 ![Solve Script Output](/assets/img/posts/event_horizon/solve_output.png)
 
-### Flag
+### Flag (Event Horizon)
 
 ```
 nexus{5t0r4g3_M1n1ng_4nd_G45_M45_t3r}
