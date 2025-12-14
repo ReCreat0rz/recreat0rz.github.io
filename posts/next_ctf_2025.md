@@ -184,7 +184,7 @@ nexus{X0R_4BI_D3C0D1NG_2025}
 
 ### Solution
 
-Lets use `cast code` to get contract bytecode
+Although i didn't managed to solve this challenge, Lets use `cast code` to get contract bytecode
 
 ```bash
 cast code 0x5FbDB2315678afecb367f032d93F642f64180aa3 --rpc-url http://4.211.248.144:8545 > bytecode.hex
@@ -293,7 +293,7 @@ def extract_strings(bytecode: bytes) -> list:
     strings = []
     current = ""
     for byte in bytecode:
-        if 32 &lt;= byte &lt;= 126:
+        if 32 <= byte <= 126:
             current += chr(byte)
         else:
             if len(current) >= 4:
@@ -316,10 +316,14 @@ if __name__ == "__main__":
 
 Here is the Result:
 
+INFO: i don't know if this is intended way or unintended, maybe you should refer to official writeup
+
 ```
 python3 solve.py
  FLAG: }V[`@Qanexus{5t0r4g3_M1n1ng_4nd_G45_M45_t3r}
 ```
+
+![Solve Script Output](/assets/img/posts/event_horizon/solve_output.png)
 
 ### Flag
 
