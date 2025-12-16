@@ -44,7 +44,7 @@ export default function Home() {
 /_/ |_|\\___/\\____/_/   \\___/\\__,_/\\__/\\___/_/    /___/ 
 `}
           <span className="ascii-subtitle">
-            &lt; CTF Player | Smart Contract Auditor | Penetration Tester &gt;
+            &lt; CTF Player | Penetration Tester &gt;
           </span>
         </pre>
       </div>
