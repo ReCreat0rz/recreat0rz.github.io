@@ -36,7 +36,8 @@ sym.ClearRoute.ContentView.checkForProxyAndSend_...F_
 `CFNetworkCopySystemProxySettings` is a library function used to retrieve device’s system-wide network proxy configuration.
 
 Link:
-https://developer.apple.com/documentation/cfnetwork/cfnetworkcopysystemproxysettings()
+
+* [CFNetworkCopySystemProxySettings Documentation](https://developer.apple.com/documentation/cfnetwork/cfnetworkcopysystemproxysettings())
 
 ![imported library used for proxy](/assets/img/posts/8ksec_clear_route/imported%20library%20used%20for%20proxy.png)
 
@@ -141,8 +142,9 @@ As a result, the proxy detection mechanism was successfully bypassed. However, r
 To bypass certificate pinning, **SSL Kill Switch 3** can be used, as it is capable of disabling most certificate pinning validation checks on iOS applications. This tool is also listed as **MSTG-TOOL-0066** in the _OWASP Mobile Application Security Testing Guide (MASTG)_.
 
 Link:
-https://github.com/NyaMisty/ssl-kill-switch3
-https://mas.owasp.org/MASTG/tools/ios/MASTG-TOOL-0066/
+
+* [SSL Kill Switch 3](https://github.com/NyaMisty/ssl-kill-switch3)
+* [MASTG Tool - SSL Kill Switch 2](https://mas.owasp.org/MASTG/tools/ios/MASTG-TOOL-0066/)
 
 ![SSL Kill Switch 3](/assets/img/posts/8ksec_clear_route/SSL%20Kill%20Switch%203.png)
 
