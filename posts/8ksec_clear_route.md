@@ -49,8 +49,9 @@ The `**isProxyEnabled**` is being called in `**checkForProxyAndSend**`, due to i
 ![isProxyEnabled is being called in checkProxyAndSend](/assets/img/posts/8ksec_clear_route/isProxyEnabled%20is%20being%20called%20in%20checkProxyAndSend.png)
 
 The `checkForProxyAndSend` function performs the following checks:
-·       If the proxy is **not enabled**, the execution flow jumps to address `0x564c`, which subsequently returns **“Request Successful.”**
-·       If the proxy is **enabled**, the execution flow does not jump to address `0x564c` and instead returns an error.
+
+* If the proxy is **not enabled**, the execution flow jumps to address `0x564c`, which subsequently returns **“Request Successful.”**
+* If the proxy is **enabled**, the execution flow does not jump to address `0x564c` and instead returns an error.
 
 ![Check Proxy Enabled or Not (checkProxyAndSend)](/assets/img/posts/8ksec_clear_route/Check%20Proxy%20Enabled%20or%20Not%20(checkProxyAndSend).png)
 
@@ -61,10 +62,11 @@ Additionally, the `sendSensitiveRequest` function is invoked only when a proxy i
 ![if Proxy is Disabled , sendSensitiveFunction is called (checkProxyAndSend)](/assets/img/posts/8ksec_clear_route/if%20Proxy%20is%20Disabled%20,%20sendSensitiveFunction%20is%20called%20(checkProxyAndSend).png)
 
 Within the `sendSensitiveRequest` function, the following notable details were identified:
-·       The request is sent to the URL `https://8ksec.io/blog`.
-·       The transmitted data includes user information and the CTF flag.
-·       The data is converted into JSON format using `NSJSONSerialization`, utilizing an `NSDictionary`.
-·       The request is sent using `dataTaskWithRequest:completionHandler:` followed by `resume()`, involving `NSURLRequest` and handling the response via `NSURLResponse`.
+
+* The request is sent to the URL `https://8ksec.io/blog`.
+* The transmitted data includes user information and the CTF flag.
+* The data is converted into JSON format using `NSJSONSerialization`, utilizing an `NSDictionary`.
+* The request is sent using `dataTaskWithRequest:completionHandler:` followed by `resume()`, involving `NSURLRequest` and handling the response via `NSURLResponse`.
 
 ![Target URL](/assets/img/posts/8ksec_clear_route/Target%20URL.png)
 
@@ -76,8 +78,9 @@ Within the `sendSensitiveRequest` function, the following notable details were i
 ![Send the request](/assets/img/posts/8ksec_clear_route/Send%20the%20request.png)
 
 Returning to the `isProxyEnabled` function, the logic checks for strings related to `HTTPProxy`.
-·       When a proxy is detected, execution does **not** jump to address `0x6824`.
-·       When no proxy is detected, execution jumps to address `0x6824` which marks the successful of the request.
+
+* When a proxy is detected, execution does **not** jump to address `0x6824`.
+* When no proxy is detected, execution jumps to address `0x6824` which marks the successful of the request.
 
 ![Check Proxy Settings (isProxyEnabled)](/assets/img/posts/8ksec_clear_route/Check%20Proxy%20Settings%20(isProxyEnabled).png)
 
