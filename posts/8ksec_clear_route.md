@@ -45,7 +45,7 @@ First, an analysis was conducted to determine where `CFNetworkCopySystemProxySet
 
 ![Proxy Settings is being called into isProxyEnabled](/assets/img/posts/8ksec_clear_route/Proxy%20Settings%20is%20being%20called%20into%20isProxyEnabled.png)
 
-The `**isProxyEnabled**` is being called in `**checkForProxyAndSend**`, due to its involvement in proxy detection.
+The `isProxyEnabled` is being called in `checkForProxyAndSend`, due to its involvement in proxy detection.
 
 ![isProxyEnabled is being called in checkProxyAndSend](/assets/img/posts/8ksec_clear_route/isProxyEnabled%20is%20being%20called%20in%20checkProxyAndSend.png)
 
