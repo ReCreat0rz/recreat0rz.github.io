@@ -311,10 +311,10 @@ HTB{gg_wp_w3lc0me_t0_th3_t34m}
 
 ## Spectral
 
-# TLDR
+## TLDR
 Just jump into Learn from another writeup (Spectral) and ignore the debugging option, since i did not manage to solve this ctf challenge.
 
-# Setup.sol (Spectral)
+## Setup.sol (Spectral)
 in **isSolved()** function, we need to make sure that the control unit is run in **"Emergency Mode"** which indicate by **3** so it will returns **true**.
 ```solidity
 function isSolved() public view returns (bool) {
@@ -324,7 +324,7 @@ function isSolved() public view returns (bool) {
     }
 ```
 
-# VCNK.sol (Spectral)
+## VCNK.sol (Spectral)
 
 ## Source Code Explanation
 
@@ -420,8 +420,9 @@ gateway.totalUsage += _amount;
 
 Explanation about reentrancy attacks
 Link:
-https://www.cyfrin.io/blog/what-is-a-reentrancy-attack-solidity-smart-contracts
-https://owasp.org/www-project-smart-contract-top-10/2025/en/src/SC05-reentrancy-attacks.html
+
+* [Reentrancy Attack - Cyfrin](https://www.cyfrin.io/blog/what-is-a-reentrancy-attack-solidity-smart-contracts)
+* [Reentrancy Attack - OWASP](https://owasp.org/www-project-smart-contract-top-10/2025/en/src/SC05-reentrancy-attacks.html)
 ```solidity
 From OWASP:
 A reentrancy attack exploits the vulnerability in smart contracts when a function makes an external call to another contract before updating its own state. This allows the external contract, possibly malicious, to reenter the original function and repeat certain actions, like withdrawals, using the same state. Through such attacks, an attacker can possibly drain all the funds from a contract.
@@ -435,7 +436,7 @@ This code is using external call which means it can recursively call **requestPo
 vcnkCompatibleReceiver(_receiver).deliverEnergy(_amount);
 ```
 
-# Exploit.sol (Spectral)
+## Exploit.sol (Spectral)
 ## Credential Information (Spectral)
 ```#!/bin/bash
 RPC URL: http://94.237.58.46:37127/
@@ -611,7 +612,7 @@ Our balance is 19 ETH which is why got the error of Insufficient Funds
 ```
 
 
-# After Party (Spectral)
+## After Party (Spectral)
 Since i didn't managed to successfully solved this challenge, I need to understand about **EIP-7702** first in order to solve this challenge, according from **kiinzu** and **s0** in HTB Discord.
 Title : **EIP-7702: Set EOA account code**
 1. in `foundry.toml` we can see the `evm_version` is set to `prague` (in this version, exist EIP-7702) [https://mixbytes.io/blog/the-prague-electra-pectra-hardfork-explained](https://mixbytes.io/blog/the-prague-electra-pectra-hardfork-explained "https://mixbytes.io/blog/the-prague-electra-pectra-hardfork-explained"),

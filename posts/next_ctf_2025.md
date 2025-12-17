@@ -115,7 +115,9 @@ cast decode-abi -i "f(bytes)" 0x000000000000000000000000000000000000000000000000
 
 Lets try to convert this hex into ascii by removing the `0x`
 
-Link: https://www.rapidtables.com/convert/number/hex-to-ascii.html
+Link:
+
+* [Hex to ASCII Converter](https://www.rapidtables.com/convert/number/hex-to-ascii.html)
 
 ```
 59524f42444c6f07656803757e68730474077306797068050705024a
@@ -192,7 +194,9 @@ cast code 0x5FbDB2315678afecb367f032d93F642f64180aa3 --rpc-url http://4.211.248.
 
 Since this challenge didn't provide the solidity code, to understand more about the contract logic, lets try to decompile it using `cast` command or using this link.
 
-Link: https://app.dedaub.com/decompile?md5=c9c717b81e6705593ffae4101c8dc4ae 
+Link:
+
+* [Dedaub Decompiler](https://app.dedaub.com/decompile?md5=c9c717b81e6705593ffae4101c8dc4ae) 
 
 ```bash
 cast disassemble $(cast code 0x5FbDB2315678afecb367f032d93F642f64180aa3 --rpc-url http://4.211.248.144:8545)
@@ -216,7 +220,9 @@ SNIPPED
 
 Lets inspect the hex by converting it to ASCII by removing `0x`
 
-Link: www.rapidtables.com/convert/number/hex-to-ascii.html
+Link:
+
+* [Hex to ASCII Converter](https://www.rapidtables.com/convert/number/hex-to-ascii.html)
 
 ```
 53796e6365640000000000000000000000000000000000000000000000000000 = Synced
