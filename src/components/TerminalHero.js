@@ -17,9 +17,8 @@ const TerminalHero = () => {
                         <span className={styles.prompt}>root@recreat0rz:~#</span>
                         <span className={styles.command}>cat quote.txt</span>
                     </div>
-                    <div className={styles.output}>
-                        {`
-"I have not failed. I've just found 10,000 ways that won't work." - Thomas Edison`}
+                    <div className={`${styles.output} ${styles.quoteOutput}`}>
+                        {`"I have not failed. I've just found 10,000 ways that won't work." - Thomas Edison`}
                     </div>
                     <br />
 
