@@ -18,7 +18,7 @@ const TerminalHero = () => {
                         <span className={styles.command}>cat quote.txt</span>
                     </div>
                     <div className={`${styles.output} ${styles.quoteOutput}`}>
-                        {`"I have not failed. I've just found 10,000 ways that won't work." - Thomas Edison`}
+                        {`"I fear not the man who has practiced 10,000 kicks once, but I fear the man who had practiced one kick 10,000 times." - Bruce Lee`}
                     </div>
                     <br />
 
