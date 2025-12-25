@@ -57,7 +57,7 @@ export default function About() {
                         </p>
 
                         <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Lore Dump About Me:</p>
-                        <ul style={{ listStyle: 'disc', paddingLeft: '1.5rem', marginBottom: '1rem' }}>
+                        <ul style={{ listStyle: 'disc', paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
                             {[
                                 "Plays FPS, RPG, MMORPG, and turn-based games because committing to one genre is too mainstream",
                                 "Currently trapped in the blockchain CTF saga",
@@ -70,6 +70,24 @@ export default function About() {
                                 </li>
                             ))}
                         </ul>
+
+                        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Certifications:</p>
+                        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                            <Image
+                                src="/assets/img/badges/oscp.png"
+                                alt="OSCP Badge"
+                                width={120}
+                                height={120}
+                                style={{ objectFit: 'contain' }}
+                            />
+                            <Image
+                                src="/assets/img/badges/oscp_plus.png"
+                                alt="OSCP+ Badge"
+                                width={120}
+                                height={120}
+                                style={{ objectFit: 'contain' }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
